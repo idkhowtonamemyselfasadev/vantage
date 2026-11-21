@@ -13,6 +13,7 @@ shutil.copy(jars["1.0.6"], jar)
 shutil.copy(jars["1.0.7"], fresh)
 prev = jar + ".prev"; shutil.copy(jar, prev)   # what Updater.prepareSwap does before the swap
 print("before: jar", sha256(jar)[:16], "new", sha256(fresh)[:16], "prev", sha256(prev)[:16], flush=True)
+print(subprocess.run(["java", "winci/Info.java"], capture_output=True, text=True).stdout, flush=True)
 r = subprocess.run(["java", "winci/Hold.java", jar, fresh, W], capture_output=True, text=True, timeout=120)
 print(r.stdout, r.stderr, flush=True)
 for i in range(60):

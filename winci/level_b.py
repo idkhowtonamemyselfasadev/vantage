@@ -166,15 +166,33 @@ print(f"launch 2 (watched first launch on the new jar): kept line = {kept} after
 shutil.copy(latest, os.path.join(LOGS, "launch2-latest.log")) if os.path.exists(latest) else None
 subprocess.run(["taskkill", "/F", "/T", "/PID", str(p2.pid)], capture_output=True)
 time.sleep(3)
+
+# ---- launch 3: rollback. The marker says the last launch on the new jar never reached the title screen; the kept .prev must come back ----
+open(os.path.join(cfg, "update-pending"), "w").write("booting\n" + JARS["1.0.6"] + "\n" + JARS["1.0.7"] + "\n")
+a3 = list(args)  # with the rig flag, so the game closes itself
+p3 = launch(a3, "launch3-stdout.log")
+t3 = time.time()
+rb = wait_for(p3, "PRODTEST title reached", 420, "launch3")
+print(f"launch 3 (rollback armed): title reached = {rb} after {time.time()-t3:.0f}s; going-back line in log: {'going back to the previous jar' in rd(latest)}", flush=True)
+shutil.copy(latest, os.path.join(LOGS, "launch3-latest.log")) if os.path.exists(latest) else None
+t1 = time.time()
+while p3.poll() is None and time.time() - t1 < 240: time.sleep(3)
+if p3.poll() is None: subprocess.run(["taskkill", "/F", "/PID", str(p3.pid)], capture_output=True)
+rolled = False
+for i in range(90):
+    if H(jar) == JARS["1.0.6"]: rolled = True; break
+    time.sleep(1)
+print(f"after launch 3 closed: jar rolled back to 1.0.6 by the helper = {rolled}; jar {H(jar)}; marker left: {os.path.exists(os.path.join(cfg, 'update-pending'))}", flush=True)
 allt = "".join(rd(f) for f in sorted(glob.glob(os.path.join(LOGS, "*.log"))))
 print("---- key lines ----")
 for l in allt.splitlines():
     if re.search(r"Auto update|Newer build|fetching it|Own command line|Update download|Handing over|First launch|vantage 1\.0|Update not installed|Update check|Terms:|rolls back|going back|PRODTEST (title|world|failed)|Rendering|Renderer|Stopping", l) and "Realms" not in l:
         print(l[:260])
+print("rollback test (launch 3):", "jar back on the 1.0.6 hash" if rolled else "NOT rolled back")
 print("mods dir:", sorted(os.listdir(mods)))
-print("AFTER: mods/vantage-1.0.6.jar sha256", H(jar), "(1.0.7 expected", JARS["1.0.7"][:16] + ")")
+print("AFTER (final, after rollback): mods/vantage-1.0.6.jar sha256", H(jar))
 print("AFTER: mods/vantage-1.0.6.jar.prev sha256", H(jar + ".prev"), "(1.0.6 expected", JARS["1.0.6"][:16] + ")")
 print("update-pending marker left:", os.path.exists(os.path.join(cfg, "update-pending")))
-ok = swapped and kept and H(jar + ".prev") == JARS["1.0.6"]
+ok = swapped and kept and rolled and H(jar + ".prev") == JARS["1.0.6"]
 print("LEVEL B", "PASS" if ok else "NOT PASSED (see lines above)", flush=True)
 sys.exit(0 if ok else 1)
