@@ -30,7 +30,7 @@ JH = os.environ.get("JAVA_HOME") or os.path.dirname(os.path.dirname(shutil.which
 JAVA = os.path.join(JH, "bin", "java.exe")
 print("java:", JAVA, flush=True)
 mesa = os.path.join(W, "mesa"); os.makedirs(mesa, exist_ok=True)
-subprocess.run(["gh", "release", "download", "--repo", "pal1000/mesa-dist-win", "--pattern", "*release-msvc.7z", "--dir", mesa, "--clobber"], check=True)
+subprocess.run(["gh", "release", "download"] + ([os.environ["MESA_TAG"]] if os.environ.get("MESA_TAG") else []) + ["--repo", "pal1000/mesa-dist-win", "--pattern", "*release-msvc.7z", "--dir", mesa, "--clobber"], check=True)
 arch = glob.glob(os.path.join(mesa, "*release-msvc.7z"))[0]
 print("mesa archive:", os.path.basename(arch), flush=True)
 subprocess.run(["7z", "x", "-y", "-o" + os.path.join(mesa, "x"), arch], check=True, stdout=subprocess.DEVNULL)
@@ -108,51 +108,73 @@ H = lambda p: sha256(p) if os.path.exists(p) else None
 print("BEFORE: mods/vantage-1.0.6.jar sha256", H(jar), "(mtime set to 2026-10-01)", flush=True)
 
 args = [JAVA, "-Xmx2G", "-Xms512M"] + [f"-D{k}={nat}" for k in ("java.library.path", "jna.tmpdir", "org.lwjgl.system.SharedLibraryExtractPath", "io.netty.native.workdir")]
-args += ["-Dminecraft.launcher.brand=ci", "-Dminecraft.launcher.version=1", "-cp", ";".join(cp)] + fprof["arguments"]["jvm"]
+args += ["-Dminecraft.launcher.brand=ci", "-Dminecraft.launcher.version=1", "-Dvantage.prodtest=true", "-cp", ";".join(cp)] + fprof["arguments"]["jvm"]
 args += [fprof["mainClass"], "--username", "Alex_Test", "--version", VER, "--gameDir", GAME, "--assetsDir", os.path.join(M, "assets"),
          "--assetIndex", ai["id"], "--uuid", "00000000000000000000000000000000", "--accessToken", "0", "--clientId", "0", "--xuid", "0", "--versionType", "release"]
 print("command line:", len(subprocess.list2cmdline(args)), "chars,", len(args), "parts", flush=True)
 env = dict(os.environ, **ENVX); env.pop("VANTAGE_RELAUNCHED", None)
-out = open(os.path.join(LOGS, "launch1-stdout.log"), "wb")
-t0 = time.time()
-p = subprocess.Popen(args, cwd=GAME, env=env, stdout=out, stderr=subprocess.STDOUT)
-
 latest = os.path.join(GAME, "logs", "latest.log")
-def readall():
-    s = ""
-    for f in (os.path.join(LOGS, "launch1-stdout.log"), latest):
-        try: s += open(f, "r", errors="replace").read()
-        except Exception: pass
-    return s
+def rd(f):
+    try: return open(f, "r", errors="replace").read()
+    except Exception: return ""
+def dump(pid, tag):
+    r = subprocess.run(["jcmd", str(pid), "Thread.print"], capture_output=True, text=True, timeout=60)
+    open(os.path.join(LOGS, f"threads-{tag}.txt"), "w").write(r.stdout + r.stderr)
+def launch(a, name):
+    out = open(os.path.join(LOGS, name), "wb")
+    return subprocess.Popen(a, cwd=GAME, env=env, stdout=out, stderr=subprocess.STDOUT)
+def wait_for(p, needle, secs, tag):
+    t0 = time.time(); lastsize = -1; lastchange = time.time(); dumped = False
+    while time.time() - t0 < secs:
+        time.sleep(3)
+        s = rd(latest)
+        if needle in s: return True
+        if len(s) != lastsize: lastsize = len(s); lastchange = time.time()
+        elif time.time() - lastchange > 90 and not dumped and p.poll() is None:
+            dump(p.pid, tag); dumped = True; print("log stalled 90s, thread dump saved", flush=True)
+        if p.poll() is not None and needle not in rd(latest): return False
+    return False
+
+# ---- launch 1: 1.0.6 with the real updater ----
+p = launch(args, "launch1-stdout.log")
+t0 = time.time()
+got_title = wait_for(p, "PRODTEST title reached", 420, "launch1")
+print(f"launch 1 (1.0.6): title reached = {got_title} after {time.time()-t0:.0f}s", flush=True)
+shutil.copy(latest, os.path.join(LOGS, "launch1-latest.log")) if os.path.exists(latest) else None
+print("jar while the game still runs: sha256", H(jar), "| .new present:", os.path.exists(jar + ".new"), "| .prev", H(jar + ".prev"), flush=True)
+# let the game close itself (ProdTest stops after its world), else close it by pid; the helper started by the updater waits for that pid
+t1 = time.time()
+while p.poll() is None and time.time() - t1 < 240: time.sleep(3)
+if p.poll() is None:
+    print("game still running, closing it by pid", flush=True); subprocess.run(["taskkill", "/F", "/PID", str(p.pid)], capture_output=True)
+else:
+    print("game closed itself, exit code", p.returncode, flush=True)
+swapped = False
+for i in range(90):
+    if H(jar) == JARS["1.0.7"]: swapped = True; break
+    time.sleep(1)
+print(f"after the game closed: jar swapped to 1.0.7 by the helper = {swapped}; jar {H(jar)}; prev {H(jar + '.prev')}; .new left: {os.path.exists(jar + '.new')}", flush=True)
+time.sleep(3)
+
+# ---- launch 2: plain launch on the swapped jar, watched by the rollback guard ----
+a2 = [x for x in args if x != "-Dvantage.prodtest=true"]
+p2 = launch(a2, "launch2-stdout.log")
+t2 = time.time()
 KEEP = "First launch after the update reached the title screen: the new build is kept"
-done = None
-snap = ""
-while time.time() - t0 < 14 * 60:
-    time.sleep(3)
-    s = readall()
-    try: snap = open(latest, "r", errors="replace").read() or snap
-    except Exception: pass
-    if KEEP in snap: done = "title"; break
-    if "crash report" in s.lower() or "going back to the previous jar" in s: done = "fail"; break
-    if p.poll() is not None and time.time() - t0 > 600: break
-print("watch ended:", done, f"after {time.time()-t0:.0f}s; first process exit code {p.poll()}", flush=True)
+kept = wait_for(p2, KEEP, 420, "launch2")
+print(f"launch 2 (watched first launch on the new jar): kept line = {kept} after {time.time()-t2:.0f}s", flush=True)
+shutil.copy(latest, os.path.join(LOGS, "launch2-latest.log")) if os.path.exists(latest) else None
+subprocess.run(["taskkill", "/F", "/T", "/PID", str(p2.pid)], capture_output=True)
 time.sleep(3)
-subprocess.run(["taskkill", "/F", "/T", "/IM", "java.exe"], capture_output=True)
-time.sleep(3)
-for gz in glob.glob(os.path.join(GAME, "logs", "*.log.gz")):
-    import gzip; open(os.path.join(LOGS, os.path.basename(gz)[:-3]), "wb").write(gzip.open(gz).read())
-shutil.copy(latest, os.path.join(LOGS, "relaunched-latest.log")) if os.path.exists(latest) else None
-allt = ""
-for f in glob.glob(os.path.join(LOGS, "*.log")): allt += open(f, errors="replace").read()
+allt = "".join(rd(f) for f in sorted(glob.glob(os.path.join(LOGS, "*.log"))))
 print("---- key lines ----")
 for l in allt.splitlines():
-    if re.search(r"Auto update|Newer build|fetching it|Own command line|Update download|Handing over|First launch|vantage 1\.0|Loading \d+ mods|Update not installed|Update check|Terms|rolls back|going back|OpenGL|Renderer|GL_|Exception|Caused by", l) and "Realms" not in l:
+    if re.search(r"Auto update|Newer build|fetching it|Own command line|Update download|Handing over|First launch|vantage 1\.0|Update not installed|Update check|Terms:|rolls back|going back|PRODTEST (title|world|failed)|Rendering|Renderer|Stopping", l) and "Realms" not in l:
         print(l[:260])
-print("---- files after ----")
 print("mods dir:", sorted(os.listdir(mods)))
 print("AFTER: mods/vantage-1.0.6.jar sha256", H(jar), "(1.0.7 expected", JARS["1.0.7"][:16] + ")")
 print("AFTER: mods/vantage-1.0.6.jar.prev sha256", H(jar + ".prev"), "(1.0.6 expected", JARS["1.0.6"][:16] + ")")
-print("update-pending marker:", os.path.exists(os.path.join(cfg, "update-pending")))
-ok = H(jar) == JARS["1.0.7"] and H(jar + ".prev") == JARS["1.0.6"] and done == "title"
-print("LEVEL B", "PASS: real update 1.0.6 -> 1.0.7 on Windows, relaunched game reached the title screen" if ok else "NOT PASSED (see key lines)", flush=True)
+print("update-pending marker left:", os.path.exists(os.path.join(cfg, "update-pending")))
+ok = swapped and kept and H(jar + ".prev") == JARS["1.0.6"]
+print("LEVEL B", "PASS" if ok else "NOT PASSED (see lines above)", flush=True)
 sys.exit(0 if ok else 1)
