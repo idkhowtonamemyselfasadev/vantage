@@ -1,0 +1,37 @@
+What's new in Vantage
+
+VERSION 1.0.5
+For Minecraft 1.21.11 on Fabric. Needs Fabric API. Put the jar in your mods folder.
+
+Changed
+- Fixes and smoother performance all round, mostly in the finders and the 3D drawing.
+- Safer updates: a downloaded build is only installed when its checksum matches the release.
+
+VERSION 1.0.2
+For Minecraft 1.21.11 on Fabric. Needs Fabric API. Put the jar in your mods folder.
+
+Changed
+- Auto update is off by default. When a newer build is out, the title screen asks first: Update or Later. Nothing is downloaded until you click Update. If you want it to update by itself before the game opens, switch on Auto update in the menu's Settings page.
+- If you already have Vantage, your saved setting stays as it is. Switch Auto update off in Settings if you want to be asked.
+
+VERSION 1.0.1
+For Minecraft 1.21.11 on Fabric. Needs Fabric API. Put the jar in your mods folder (if you already have Vantage it updates itself on the next launch).
+
+New
+- Config sharing: export your setup as a code, a friend pastes it to import (ClickGUI > General > Configs, or `.config export` / `.config import`)
+- Sound Detector: finds farms and bases by the sounds the server sends, with labels for common farm types
+- Seed Cracker: collects structure clues for working out a world seed (`.crack`)
+- Block ESP: rebuilt, pick any blocks and a colour for each
+- Macro: repeats one command with a random delay between two values (`.macro`)
+- Favourites: star a module and it sits at the top of the menu
+
+Changed
+- ESP outlines are thinner and fills lighter, so busy scenes stay readable
+- The FOV slider in the options screen works again while Custom FOV is on
+
+Automation modules (RTP Loop, Macro) send commands for you. Servers can mute or ban for that; use them at your own risk.
+
+BETA (only visible with beta unlocked)
+- Declutter: touching boxes become one outline with a count, with caps on boxes and labels (ESP Style).
+- Find Log, a first-run welcome screen, menu polish, Calm switch, Frame Budget, presets and this About screen.
+Nothing in the beta list is final until it has been tried and promoted.

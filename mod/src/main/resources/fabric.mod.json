@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "vantage",
+  "version": "${version}",
+  "name": "Vantage",
+  "description": "Client-side finder and render utility: stash finder, new chunks, trails, ESP, xray, radar, click GUI.",
+  "authors": ["Vantage"],
+  "license": "GPL-3.0-or-later",
+  "environment": "client",
+  "entrypoints": {
+    "preLaunch": ["dev.vantage.core.PreLaunch"],
+    "client": ["dev.vantage.VantageClient"]
+  },
+  "mixins": ["vantage.mixins.json"],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

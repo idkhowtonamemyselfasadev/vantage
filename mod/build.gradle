@@ -1,0 +1,129 @@
+plugins {
+    id 'fabric-loom' version "${loom_version}"
+    id 'java'
+    id 'com.diffplug.spotless' version "${spotless_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+    // Sodium is published on Modrinth's Maven; only that group is taken from there.
+    exclusiveContent {
+        forRepository { maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' } }
+        filter { includeGroup 'maven.modrinth' }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    // Only compiled against, for the xray hooks into Sodium's chunk mesher. Never bundled.
+    modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
+    if (project.hasProperty('withSodium')) modRuntimeOnly "maven.modrinth:sodium:${project.sodium_version}"
+
+    // Unit tests (src/test). fabric-loader-junit starts tests inside Fabric's class loader, so a test may touch Minecraft classes.
+    testImplementation platform("org.junit:junit-bom:${project.junit_version}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    // ./gradlew test -Pstorebench runs only the storage benchmark (class StoreBenchmarkTest, tag storebench); a normal run leaves it out
+    useJUnitPlatform {
+        if (project.hasProperty('storebench')) includeTags 'storebench' else excludeTags 'storebench'
+    }
+    testLogging { events 'failed'; exceptionFormat 'full'; showStandardStreams = project.hasProperty('storebench') }
+    if (project.hasProperty('storebench')) maxHeapSize = '3g'
+}
+
+processResources {
+    def props = [version: project.version, minecraft_version: project.minecraft_version, loader_version: project.loader_version]
+    inputs.properties props
+    filesMatching('fabric.mod.json') { expand props }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = 'UTF-8'
+    it.options.release = 21
+    // Every compiler warning is an error. Two lints are off on purpose (DECISIONS.md, 2026-11-19):
+    // this-escape fires for every module, because a module declares its settings as fields that call add(...) while it is being
+    // constructed; classfile complains about an annotation inside the Gson jar that Minecraft ships, which is not our code.
+    it.options.compilerArgs += ['-Xlint:all,-this-escape,-classfile', '-Werror', '-Xmaxwarns', '9000']
+}
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
+}
+
+// Formatting rules that a machine can check (STYLE.md has the rest). Lines are not re-wrapped: see DECISIONS.md.
+// `./gradlew spotlessApply` fixes what it can; `check` (and so `build`) fails when a file breaks a rule.
+spotless {
+    java {
+        target 'src/**/*.java'
+        removeUnusedImports()
+        importOrder('java|javax', '')
+        leadingTabsToSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+// ./shot.sh passes -Pshot=<dir>: the dev client then runs ShotTest and writes screenshots there
+// ./uitest.sh passes -Pui=<dir>: the dev client runs UiTest, a scene per feature, PASS/FAIL in the log + screenshots
+if (project.hasProperty('ui')) {
+    loom.runs.client.vmArgs("-Dvantage.ui=true", "-Dvantage.shotdir=${project.property('ui')}")
+    if (project.hasProperty('uionly')) loom.runs.client.vmArgs("-Dvantage.uionly=${project.property('uionly')}")
+    loom.runs.client.programArgs("--width", "1920", "--height", "1080")
+}
+// ../antitest/run.sh passes -Panti=<mode>: the dev client joins our local test server and logs every finder
+if (project.hasProperty('anti')) {
+    loom.runs.client.vmArgs("-Dvantage.anti=${project.property('anti')}", "-Dvantage.shotdir=${project.property('shotdir')}")
+    loom.runs.client.programArgs("--width", "1920", "--height", "1080", "--username", "VTest", "--quickPlayMultiplayer", project.property('anti').toString().startsWith('donut') ? "127.0.0.1:25697" : "127.0.0.1:25699")
+}
+// ./menushot.sh passes -Pmenu=<dir>: the dev client shoots the loading screen frames and the real menu screens, then quits
+if (project.hasProperty('menu')) {
+    loom.runs.client.vmArgs("-Dvantage.menu=true", "-Dvantage.shotdir=${project.property('menu')}", "-Dvantage.loadshots=${project.property('menu')}")
+    // -Pres=3840x2160 shoots at another window size, -Puisize=0.6 with another panel size, -PoldText=true with the old fixed text raster (A/B)
+    def res = (project.findProperty('res') ?: '1920x1080').toString().split('x')
+    loom.runs.client.programArgs("--width", res[0], "--height", res[1])
+    if (project.hasProperty('uisize')) loom.runs.client.vmArgs("-Dvantage.uisize=${project.property('uisize')}")
+    if (project.hasProperty('oldText')) loom.runs.client.vmArgs("-Dvantage.oldText=${project.property('oldText')}")
+}
+// ./video.sh passes -Pvideo=<dir>: the dev client records the block outline video frames there, then quits
+if (project.hasProperty('video')) {
+    loom.runs.client.vmArgs("-Dvantage.video=true", "-Dvantage.shotdir=${project.property('video')}")
+    loom.runs.client.programArgs("--width", "1920", "--height", "1080")
+}
+// ./seedtest.sh passes -Pseedtest=<seed>: the dev client runs SeedTest (a known-seed world: login hash and cracker evidence), then quits
+if (project.hasProperty('seedtest')) {
+    loom.runs.client.vmArgs("-Dvantage.seedtest=${project.property('seedtest')}", "-Dvantage.shotdir=${project.property('shotdir')}")
+    loom.runs.client.programArgs("--width", "1280", "--height", "720")
+}
+// ./promotest.sh passes -Ppromo=<seed>: the dev client builds the promo world and takes the website pictures and clip frames
+if (project.hasProperty('promo')) {
+    loom.runs.client.vmArgs("-Dvantage.promo=${project.property('promo')}", "-Dvantage.shotdir=${project.property('shotdir')}", "-Dvantage.promorender=${project.findProperty("rd") ?: "8"}", "-Dvantage.promoonly=${project.findProperty('only') ?: ''}")
+    loom.runs.client.programArgs("--width", "1920", "--height", "1080", "--username", "Player214")
+}
+// ./soundtest.sh passes -Psoundtest=<seconds per scene>: the dev client runs SoundTest (Sound Detector on real builds), then quits
+if (project.hasProperty('soundtest')) {
+    loom.runs.client.vmArgs("-Dvantage.soundtest=${project.property('soundtest')}", "-Dvantage.shotdir=${project.property('shotdir')}", "-Dvantage.soundscenes=${project.property('scenes')}", "-Dvantage.soundonly=${project.findProperty('only') ?: ''}")
+    loom.runs.client.programArgs("--width", "1280", "--height", "720")
+}
+// ./perf.sh passes -Pperf=true: the dev client runs PerfShot and logs where Vantage's frame time goes
+if (project.hasProperty('perf')) {
+    loom.runs.client.vmArgs("-Dvantage.perf=true")
+    loom.runs.client.programArgs("--width", "1920", "--height", "1080")
+}
+if (project.hasProperty('shot')) {
+    loom.runs.client.vmArgs("-Dvantage.shot=true", "-Dvantage.shotdir=${project.property('shot')}")
+    loom.runs.client.programArgs("--width", "1280", "--height", "720")
+}

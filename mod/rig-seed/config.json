@@ -1,0 +1,1060 @@
+{
+ "v": 2,
+ "modules": {
+  "Base Finder": {
+   "enabled": false,
+   "bind": 297,
+   "settings": {
+    "Touched structures": true,
+    "Amethyst clusters": true,
+    "Min score": 30.0,
+    "Sus score": 8.0,
+    "Likely areas": true,
+    "Count storage": true,
+    "Tunnels": true,
+    "Use Sound Detector": true,
+    "Growth": true,
+    "Skip villages": true,
+    "Skip structures": true,
+    "Skip showpieces": true,
+    "Skip crowds": true,
+    "Underground only": false,
+    "Panel": true,
+    "Hover card": true,
+    "Chunk marks": true,
+    "Columns": false,
+    "Color": "#FFE0BD62",
+    "Declutter": true,
+    "Auto card": true,
+    "Card reasons": 6.0,
+    "Max tags": 3.0,
+    "Tag range": 160.0,
+    "Edge arrows": true,
+    "Max labels": 10.0,
+    "Label range": 24.0,
+    "Column fade": 48.0,
+    "Live players": true,
+    "Chat alert": false,
+    "Auto waypoint": false,
+    "Ping wrecked bases": false,
+    "Stash Finder": true,
+    "Trail Finder": true,
+    "Activated Spawners": true,
+    "Player Notifier": true,
+    "Entity Scan": true,
+    "Hidden Players": true,
+    "Vanish Watch": true,
+    "Palette Scan": true,
+    "Light Scan": true,
+    "Deep Leaks": true,
+    "Sky Fingerprint": true,
+    "Simulation Ring": true,
+    "Owed Growth": true,
+    "Storage ESP": true,
+    "Block ESP": true,
+    "Entity ESP": true,
+    "Item ESP": true,
+    "Hole ESP": true,
+    "Search": true,
+    "Fullbright": true,
+    "Hand View": true,
+    "Base ESP": true,
+    "Shard Watch": true,
+    "Donut Wheel": true
+   }
+  },
+  "Base Finder 2": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Geodes": true,
+    "Grown geodes": true,
+    "End portals": true,
+    "Desert temples": true,
+    "Spawners": true,
+    "Cave torches": true,
+    "Min torches": 3.0,
+    "Chat alert": false,
+    "Auto waypoint": false,
+    "Show in world": true,
+    "Draw range": 512.0,
+    "Color": "#FFAD879B"
+   }
+  },
+  "Amethyst Finder": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Blocks": [
+     "amethyst_cluster"
+    ],
+    "Color mode": "Custom",
+    "Color": "#FFAD879B",
+    "Mode": "Both",
+    "Tracers": false,
+    "Max boxes": 400.0,
+    "Range": 0.0,
+    "Arrow": true,
+    "Chat alert": true,
+    "Large buds too": false
+   }
+  },
+  "Stash Finder": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Min storage": 12.0,
+    "Chests": true,
+    "Barrels": true,
+    "Shulkers": true,
+    "Hoppers etc.": false,
+    "Ender chests": false,
+    "Only real stashes": false,
+    "Chat alert": false,
+    "Auto waypoint": false,
+    "Show in world": true,
+    "Color": "#FFAD879B"
+   }
+  },
+  "Trail Finder": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Min chunks": 5.0,
+    "New around": 50.0,
+    "Chat alert": true,
+    "HUD hint": true,
+    "HUD corner": "Top Left",
+    "Color": "#FF78A8A8"
+   }
+  },
+  "Activated Spawners": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Torch check": true,
+    "Trial spawners": true,
+    "Chat alert": true,
+    "Auto waypoint": false,
+    "Draw range": 256.0,
+    "Color": "#FFDE6F4D",
+    "Torch color": "#FFE0BD62"
+   }
+  },
+  "New Chunks": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Style": "Fill",
+    "Height": "Feet",
+    "Y": 64.0,
+    "Show new": true,
+    "Show old": true,
+    "New color": "#50DE6F4D",
+    "Old color": "#406CBC7A",
+    "Range": 24.0
+   }
+  },
+  "Debris Finder": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Blocks": [
+     "ancient_debris"
+    ],
+    "Color mode": "Custom",
+    "Color": "#FFB5764F",
+    "Mode": "Both",
+    "Tracers": false,
+    "Max boxes": 3000.0,
+    "Range": 0.0,
+    "Arrow": true,
+    "Chat alert": true,
+    "Likely areas": true,
+    "Panel": true
+   }
+  },
+  "Seed Cracker": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "HUD panel": true,
+    "Corner": "Top Right",
+    "Buried treasure": true,
+    "Sync folder": ""
+   }
+  },
+  "Anchor Finder": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Blocks": [
+     "respawn_anchor"
+    ],
+    "Color mode": "Custom",
+    "Color": "#FFB05CFF",
+    "Mode": "Both",
+    "Tracers": true,
+    "Max boxes": 400.0,
+    "Range": 0.0,
+    "Arrow": true,
+    "Chat alert": true,
+    "Min group": 1.0,
+    "Group range": 3.0
+   }
+  },
+  "Sound Detector": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Footsteps": true,
+    "Construction": true,
+    "Resource gathering": true,
+    "Crafting stations": true,
+    "Containers": true,
+    "Villagers & animals": true,
+    "Hidden players": true,
+    "Base blocks": true,
+    "Ignore visible players": true,
+    "Sensitivity": "Medium",
+    "Ignore near me": 3.0,
+    "Arrow": true,
+    "Chat": true,
+    "Toast": false,
+    "Panel": true,
+    "Waypoint on find": false,
+    "Sound log": true,
+    "Range": 160.0
+   }
+  },
+  "Waypoints": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Beams": true,
+    "Labels": true,
+    "Max distance": 0.0,
+    "Death points": true,
+    "Death beams": 3.0,
+    "Cross-dimension": true
+   }
+  },
+  "Player Notifier": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Render distance": true,
+    "Coords": true,
+    "Leaving": true,
+    "Join / leave": false,
+    "Sound": true
+   }
+  },
+  "Entity Scan": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Range": 0.0,
+    "HUD list": true,
+    "Lines": 8.0,
+    "HUD corner": "Top Left",
+    "Alert": true,
+    "Highlight": true,
+    "Color": "#FFE0BD62"
+   }
+  },
+  "Hidden Players": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Unseen entities": true,
+    "Containers": true,
+    "Attack particles": true,
+    "Invisible": true,
+    "Toast": true
+   }
+  },
+  "Vanish Watch": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Panel": true,
+    "Toast": true,
+    "Odd profiles too": false
+   }
+  },
+  "Palette Scan": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Blocks": [
+     "diamond_ore",
+     "deepslate_diamond_ore",
+     "emerald_ore",
+     "deepslate_emerald_ore",
+     "budding_amethyst",
+     "spawner"
+    ],
+    "Range": 48.0
+   }
+  },
+  "Light Scan": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Min light": 4.0,
+    "Skip level 15": false,
+    "Toast": true,
+    "Range": 128.0,
+    "Glow shell": false,
+    "Shell min light": 5.0,
+    "Shell range": 8.0
+   }
+  },
+  "Deep Leaks": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Sounds": true,
+    "Events": true,
+    "Entities": true,
+    "Block changes": true,
+    "Digging": true,
+    "Toast": true,
+    "Range": 128.0
+   }
+  },
+  "Sky Fingerprint": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Columns": true,
+    "Show suspects": true,
+    "Toast": true,
+    "Range": 16.0
+   }
+  },
+  "Simulation Ring": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Sensitivity": 5.0,
+    "Toast": true,
+    "Columns": true,
+    "Range": 16.0
+   }
+  },
+  "Owed Growth": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Simulation distance": 4.0,
+    "Sensitivity": 40.0,
+    "Needs grown proof": true,
+    "Tiles": true,
+    "Color": "#FFFF4040",
+    "Range": 24.0
+   }
+  },
+  "Storage ESP": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Mode": "Outline",
+    "Fill alpha": 20.0,
+    "Line width": 2.0,
+    "Tracers": false,
+    "Max boxes": 500.0,
+    "Chests": true,
+    "Chest color": "#FFE0A040",
+    "Barrels": true,
+    "Barrel color": "#FFB07848",
+    "Shulkers": true,
+    "Shulker color": "#FFD070D0",
+    "Ender chests": true,
+    "Ender color": "#FF9060E0",
+    "Hoppers": false,
+    "Hopper color": "#FF909890",
+    "Furnaces": false,
+    "Furnace color": "#FFC8C8C8",
+    "Other": false,
+    "Other color": "#FF7FBEA4",
+    "Hidden containers": true
+   }
+  },
+  "Block ESP": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Blocks": [
+     "chest",
+     "barrel",
+     "diamond_ore"
+    ],
+    "Color mode": "Custom",
+    "Color": "#FF78A8A8",
+    "Mode": "Outline",
+    "Tracers": false,
+    "Max boxes": 400.0,
+    "Range": 0.0,
+    "Colors": "By block",
+    "Fill opacity": 45.0,
+    "Line width": 1.5,
+    "Distance fade": true,
+    "Fade start": 64.0,
+    "Grouping": "Veins",
+    "Group distance": 4.0,
+    "Containers together": true,
+    "Show members": false,
+    "Labels": "Short tag",
+    "Label range": 48.0,
+    "Aim card": false,
+    "HUD list": false,
+    "Exposed only": false,
+    "Scan range": 0.0,
+    "Block colors": {
+     "colors": {},
+     "off": []
+    },
+    "Migrated v2": true
+   }
+  },
+  "Entity ESP": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Mode": "Box",
+    "Box style": "Outline",
+    "Line width": 2.0,
+    "Outline width": 4.0,
+    "Glow": 1.5,
+    "Shape": "Outline",
+    "Fill opacity": 0.25,
+    "Tracers": false,
+    "Name tags": true,
+    "Range": 256.0,
+    "Players": true,
+    "Player color": "Distance",
+    "Player fixed": "#FFEEF3EE",
+    "Hostiles": false,
+    "Hostile color": "#FFDE6F4D",
+    "Passives": true,
+    "Passive color": "#FF6CBC7A",
+    "Items": true,
+    "Item color": "#FFE0BD62",
+    "Other": true,
+    "Other color": "#FF78A8A8"
+   }
+  },
+  "Item ESP": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Range": 64.0,
+    "Box": true,
+    "Name": true,
+    "Sell value": true,
+    "Min value": 0.0,
+    "Color": "#FF62D6B0"
+   }
+  },
+  "Hole ESP": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Range": 10.0,
+    "Vertical": 5.0,
+    "Mode": "Both",
+    "Box height": 0.6,
+    "Double holes": true,
+    "Through walls": true,
+    "Bedrock": "#FF6CBC7A",
+    "Mixed": "#FFE0BD62",
+    "Obsidian": "#FFDE6F4D"
+   }
+  },
+  "Search": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Blocks": [
+     "diamond_ore",
+     "deepslate_diamond_ore"
+    ],
+    "Color mode": "Block",
+    "Color": "#FF78A8A8",
+    "Mode": "Both",
+    "Tracers": false,
+    "Max boxes": 400.0,
+    "Range": 0.0
+   }
+  },
+  "ESP Style": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Merge outlines": true,
+    "Glow": true,
+    "Distance fade": true,
+    "Line width": 1.0,
+    "Shrink labels": true,
+    "Min label size": 0.55,
+    "Fade fills too": true,
+    "Depth cue": true,
+    "Reveal": true,
+    "Fill opacity": 1.0,
+    "Label size": 1.0,
+    "Label backing": true,
+    "Label range": 512.0
+   }
+  },
+  "Xray": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Blocks": [
+     "diamond_ore",
+     "deepslate_diamond_ore",
+     "ancient_debris",
+     "emerald_ore",
+     "deepslate_emerald_ore",
+     "gold_ore",
+     "deepslate_gold_ore",
+     "nether_gold_ore",
+     "iron_ore",
+     "deepslate_iron_ore",
+     "redstone_ore",
+     "deepslate_redstone_ore",
+     "lapis_ore",
+     "deepslate_lapis_ore",
+     "copper_ore",
+     "deepslate_copper_ore",
+     "coal_ore",
+     "deepslate_coal_ore",
+     "nether_quartz_ore",
+     "chest",
+     "trapped_chest",
+     "barrel",
+     "ender_chest",
+     "spawner",
+     "trial_spawner",
+     "shulker_box",
+     "white_shulker_box",
+     "orange_shulker_box",
+     "magenta_shulker_box",
+     "light_blue_shulker_box",
+     "yellow_shulker_box",
+     "lime_shulker_box",
+     "pink_shulker_box",
+     "gray_shulker_box",
+     "light_gray_shulker_box",
+     "cyan_shulker_box",
+     "purple_shulker_box",
+     "blue_shulker_box",
+     "brown_shulker_box",
+     "green_shulker_box",
+     "red_shulker_box",
+     "black_shulker_box",
+     "bedrock",
+     "obsidian",
+     "crying_obsidian",
+     "nether_portal",
+     "end_portal_frame"
+    ]
+   }
+  },
+  "Fullbright": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Gamma": 16.0
+   }
+  },
+  "No Render": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Fire overlay": true,
+    "Water overlay": true,
+    "In-wall overlay": true,
+    "Totem pop": false,
+    "Vignette": true,
+    "Portal / nausea": true,
+    "Pumpkin / snow": true,
+    "Scoreboard": false,
+    "Boss bar": false,
+    "Hurt cam": true,
+    "Weather": true,
+    "Fog": true,
+    "Blindness": true,
+    "Chunk fade-in": true
+   }
+  },
+  "Freecam": {
+   "enabled": false,
+   "bind": 293,
+   "settings": {
+    "Speed": 12.0,
+    "Hide hand": true,
+    "See underground": true,
+    "Draw everything": true,
+    "See-through view": false,
+    "Fullbright": true,
+    "Off on damage": true
+   }
+  },
+  "Radar": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Size": 90.0,
+    "Range": 64.0,
+    "Corner": "Top Left",
+    "Rotate": true,
+    "Players": true,
+    "Names": true,
+    "Hostiles": true,
+    "Passives": false,
+    "Items": false,
+    "Waypoints": true
+   }
+  },
+  "Module List": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Corner": "Top Right",
+    "Info": true,
+    "Background": true,
+    "Side bar": true,
+    "Style": "Gradient",
+    "Second color": "#FF78A8A8",
+    "Lowercase": false
+   }
+  },
+  "Target HUD": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Hold time": 3.0,
+    "Range": 6.0,
+    "Armor": true,
+    "Players only": false
+   }
+  },
+  "Logout Spots": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Colour": "#FFE06AE0",
+    "Fill alpha": 40.0,
+    "Line width": 2.0,
+    "Through walls": true,
+    "Keep": 60.0,
+    "Chat": true,
+    "Toast": true,
+    "Leak log": true
+   }
+  },
+  "Trajectories": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Only while aiming": false,
+    "Entity hits": true,
+    "Color": "#FF6CBC7A",
+    "Hit color": "#FFDE6F4D"
+   }
+  },
+  "Hand View": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Swing speed": 1.0,
+    "Item size": 1.0
+   }
+  },
+  "3D Hand": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Sideways": 0.0,
+    "Height": 0.0,
+    "Depth": 0.0,
+    "Size": 1.0,
+    "Tilt": 0.0,
+    "Mirror off hand": true,
+    "Show off hand": true
+   }
+  },
+  "Motion Blur": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Strength": 0.6000000000000001,
+    "Samples": 8.0,
+    "Max blur": 80.0,
+    "Translation": true,
+    "Hands": "Keep sharp"
+   }
+  },
+  "Crosshair": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Style": "Cross",
+    "Length": 5.0,
+    "Gap": 2.0,
+    "Thickness": 1.0,
+    "Colour": "#FFFFFFFF",
+    "Outline": true,
+    "Hit flash": true,
+    "In third person": false
+   }
+  },
+  "Hit Colour": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Colour": "#FF7B6BFF",
+    "Strength": 0.7,
+    "Armour too": true
+   }
+  },
+  "Time Changer": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Time": "Midnight",
+    "Custom time": 13000.0
+   }
+  },
+  "Block Outline": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Colour": "#FF7B6BFF",
+    "Line width": 4.0,
+    "Glow": true,
+    "Fill": 14.0,
+    "Shape": "Shape",
+    "Glide": true,
+    "Glide speed": 22.0,
+    "Through walls": false
+   }
+  },
+  "Colour Grading": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Vibrance": 35.0,
+    "Contrast": 8.0,
+    "Brightness": 3.0,
+    "Warmth": 15.0,
+    "Vignette": 30.0
+   }
+  },
+  "Hand Aura": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Colour": "Theme",
+    "Manual colour": "#FF7B6BFF",
+    "Aura": 65.0,
+    "Reach": 8.0,
+    "Rim": 40.0,
+    "Sheen": 25.0,
+    "Breathe": true
+   }
+  },
+  "Atmosphere": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Theme": "Borealis",
+    "Custom zenith": "#FF0B1A3A",
+    "Custom mid sky": "#FF123C5C",
+    "Custom horizon": "#FF1F7A6E",
+    "Custom aurora": "#FF3FD9A0",
+    "Day tint": 0.25,
+    "Gradient sky": true,
+    "Keep in rain": true,
+    "Sun & moon glow": true,
+    "Stars": true,
+    "Star brightness": 1.3,
+    "Milky way": true,
+    "Shooting stars": true,
+    "Bigger moon": true,
+    "Fog colour": true,
+    "Nether colours": true,
+    "Aurora": "Always",
+    "Aurora brightness": 1.0,
+    "Aurora speed": 1.0
+   }
+  },
+  "Zoom": {
+   "enabled": false,
+   "bind": 67,
+   "settings": {
+    "Zoom": 4.0,
+    "Smoothness": 60.0,
+    "Scroll to adjust": true,
+    "Lower sensitivity": true,
+    "Cinematic camera": false
+   }
+  },
+  "Custom FOV": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Field of view": 110.0
+   }
+  },
+  "Swing Animation": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Style": "Spin",
+    "Tempo": 1.0,
+    "Intensity": 1.0,
+    "Off hand too": true,
+    "Combat only": false
+   }
+  },
+  "Hit Particles": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Particle": "Totem",
+    "Amount": 10.0,
+    "Origin": "Impact",
+    "Only crits": false,
+    "Targets": "Living"
+   }
+  },
+  "Jump Circles": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Colour": "#FF7B6BFF",
+    "Size": 1.2,
+    "Duration": 3.0,
+    "Other players": false
+   }
+  },
+  "Low Health Warning": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Warn below": 7.0,
+    "Count absorption": true,
+    "Pulse": "Heartbeat",
+    "Intensity": 0.7,
+    "Reach": 0.16
+   }
+  },
+  "Custom Glint": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Colour": "Accent",
+    "Custom colour": "#FF7B6BFF",
+    "Intensity": 1.0,
+    "Speed": 1.0,
+    "Pattern size": 1.0
+   }
+  },
+  "Orbs": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Style": "Comet",
+    "Colour": "Comet",
+    "Colour shift": false,
+    "Count": 5.0,
+    "Size": 0.3,
+    "Glow": 1.0,
+    "Pulse": 0.45,
+    "Pulse speed": 1.2,
+    "Trail": 1.0,
+    "Sparks": 1.0,
+    "Spread": 2.6,
+    "Bounce": 0.6,
+    "Drift": 0.35,
+    "Bounce off blocks": true
+   }
+  },
+  "Totem Spirit": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Rise time": 2.4,
+    "Ascent": 1.6,
+    "Style": "Glass",
+    "Opacity": 0.65,
+    "Own pops": false,
+    "Through walls": false
+   }
+  },
+  "Region Map": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {}
+  },
+  "Base ESP": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Min Blocks": 24.0,
+    "Cluster Radius": 24.0,
+    "Range": 308.0,
+    "Max Panels": 8.0,
+    "Below Y 0": false,
+    "Box": true,
+    "Notify": true,
+    "Lit containers": "Focus",
+    "Container fill": 0.0
+   }
+  },
+  "Farm FPS Optimizer": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Items": true,
+    "XP Orbs": true,
+    "Falling Blocks": true,
+    "TNT": true,
+    "Explosions": true,
+    "Sounds": true,
+    "Sound Spam": 4.0,
+    "Pistons": true,
+    "Redstone": "Off"
+   }
+  },
+  "Profit Tracker": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Report every": 10.0,
+    "HUD panel": true,
+    "Corner": "Top Left",
+    "Auction sales": true,
+    "Action bar": true,
+    "Chat each sale": false
+   }
+  },
+  "Shard Watch": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Chat": true,
+    "RTP summary": true,
+    "HUD panel": true,
+    "Corner": "Top Left",
+    "Media only": false
+   }
+  },
+  "Donut Wheel": {
+   "enabled": false,
+   "bind": 71,
+   "settings": {
+    "Status cards": true
+   }
+  },
+  "RTP Loop": {
+   "enabled": false,
+   "bind": 48,
+   "settings": {
+    "Target X": 1000.0,
+    "Target Z": 2000.0,
+    "Radius": 500.0,
+    "Interval": 1.0,
+    "Commands": "/rtp, /rtp eu west",
+    "Chat": true,
+    "Target region first": false,
+    "Hop every": 0.0,
+    "EU Central": true,
+    "EU West": true,
+    "NA East": true,
+    "NA West": true,
+    "Asia": true,
+    "Oceania": true
+   }
+  },
+  "Macro": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Command": "/tpa ",
+    "Min delay": 1.0,
+    "Max delay": 2.0,
+    "Tries": 20.0,
+    "Stop on teleport": true,
+    "Chat": false
+   }
+  },
+  "Void Rescue": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Below Y": -75.0,
+    "Command": "/rtp",
+    "Leave if it fails": true,
+    "Wait": 4.0
+   }
+  },
+  "ClickGUI": {
+   "enabled": true,
+   "bind": 50,
+   "settings": {
+    "Theme": "Vantage",
+    "Accent": "#FF6CBC7A",
+    "Menu size": 1.0,
+    "Dim world": true,
+    "Descriptions": true,
+    "Animations": true,
+    "Vantage screens": true,
+    "Presence": false,
+    "Presence badge": true,
+    "Check for updates": false,
+    "Auto update": false
+   }
+  },
+  "HUD": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Corner": "Bottom Right",
+    "Ping sound": false,
+    "Watermark": true,
+    "Watermark style": "Text",
+    "Coords": true,
+    "Nether coords": true,
+    "Facing": true,
+    "FPS": false,
+    "Panel size": 1.0
+   }
+  },
+  "Relog": {
+   "enabled": false,
+   "bind": -1,
+   "settings": {
+    "Delay": 1.0,
+    "Reconnect button": true,
+    "Auto reconnect": false,
+    "Auto delay": 5.0
+   }
+  },
+  "Friends": {
+   "enabled": true,
+   "bind": 296,
+   "settings": {
+    "Middle click": true,
+    "Star": true,
+    "ESP colour": "#FF4FC3FF",
+    "Nearby prompt": true
+   }
+  }
+ },
+ "panels": {}
+}
