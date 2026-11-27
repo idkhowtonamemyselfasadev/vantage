@@ -14,6 +14,12 @@ The code in this repository is the source of release 1.0.38 (see the notes on di
 
 Servers may forbid mods like this and ban you for using them. No warranty.
 
+## What the finders cannot see
+
+The finders only work with what the server sends to your game. When a server withholds that data, for example by hiding
+blocks or chests until you are close, the finders cannot detect the bases behind it, and on such a server they may find
+very little.
+
 ## Build
 
 You need a JDK 21 and an internet connection for the first build (Gradle downloads itself, Minecraft, the mappings and
