@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Windows half of the auto update, a plain main with no Minecraft or Fabric in it: started by {@link PreLaunch} as
@@ -24,8 +23,9 @@ public final class Relaunch {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
             for (String line; (line = in.readLine()) != null;) cmd.add(line);
         }
+        // no time limit: a session can run for hours, and a helper that gives up while the jar is still locked loses the update
         ProcessHandle.of(pid).ifPresent(p -> {
-            try { p.onExit().get(10, TimeUnit.MINUTES); } catch (Exception ignored) {}
+            try { p.onExit().get(); } catch (Exception ignored) {}
         });
         for (int i = 0; i < 60; i++) { // the lock can outlive the process by a moment
             try {

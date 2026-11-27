@@ -10,7 +10,7 @@ Get the newest jar from [Releases](https://github.com/idkhowtonamemyselfasadev/v
 
 ## The source
 
-The code in this repository is the source of release 1.0.37 (see the notes on differences below).
+The code in this repository is the source of release 1.0.38 (see the notes on differences below).
 
 Servers may forbid mods like this and ban you for using them. No warranty.
 
@@ -22,7 +22,7 @@ the libraries).
     cd mod
     ./gradlew build
 
-The jar is `mod/build/libs/vantage-1.0.37.jar` (not the `-sources` jar). `build` also runs the unit tests and the
+The jar is `mod/build/libs/vantage-1.0.38.jar` (not the `-sources` jar). `build` also runs the unit tests and the
 formatting check. Every compiler warning is an error.
 
 The in-game check and capture rigs (a second mod, `vantage-rig`, in the original tree under `src/rig`) and their helper
@@ -87,6 +87,6 @@ additional permission to convey the resulting work. This permission does not cha
 
 Releases published before this source was released stay under the MIT licence stated inside them.
 
-Jars are in this repository's Releases. The files you see in the source are the 1.0.37 release for Minecraft 1.21.11;
+Jars are in this repository's Releases. The files you see in the source are the 1.0.38 release for Minecraft 1.21.11;
 the ports for other game versions are not included.
 Fonts and some other material have their own terms, see `THIRD-PARTY.md`.
