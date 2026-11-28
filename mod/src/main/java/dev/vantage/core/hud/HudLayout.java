@@ -54,6 +54,15 @@ public final class HudLayout {
         return new Pin(Anchor.of(col, row), offsetOf(col, x, screenW, w), offsetOf(row, y, screenH, h));
     }
 
+    /**
+     * The size factor for a window w by h that wants to be drawn {@code want} times as big, on a screen screenW by screenH (design units
+     * at factor 1): never so big that the window leaves the screen. A screen with no size (a minimised window) changes nothing.
+     */
+    public static float fitZoom(float want, float screenW, float screenH, float w, float h) {
+        float fit = Math.min(screenW / w, screenH / h);
+        return fit > 0 ? Math.min(want, fit) : want;
+    }
+
     /** Left edge of a piece in a corner stack: 3 design units from the side of its corner. */
     public static float stackX(boolean rightCorner, float w, float screenW) {
         return rightCorner ? screenW - w - 3 : 3;

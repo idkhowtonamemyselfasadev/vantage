@@ -123,6 +123,8 @@ public class ClickGui extends Screen {
     private int drawnFrames;
     /** Rig: frames this menu has drawn. */
     public int frames() { return drawnFrames; }
+    /** Rig: the window as drawn last frame, then the screen: {x, y, w, h, screenW, screenH} in the menu's design units. */
+    public final float[] lastWindow = new float[6];
     /** Rig: whether the bottom line was drawn in the last frame. */
     public static boolean footerShown;
     private String help;
@@ -230,9 +232,11 @@ public class ClickGui extends Screen {
         return NAV_Y + (Category.values().length + 1) * NAV_STEP + 24;
     }
 
+    /** Menu size, made smaller when the whole window would not fit on this screen (a big Menu size or Panel size, a narrow window). */
     private float zoom() {
         ClickGuiModule m = gui();
-        return m == null ? 1f : m.size.f();
+        // Ui.W() and H() shrink as Ui.zoom grows; times Ui.zoom is the screen at factor 1
+        return dev.vantage.core.hud.HudLayout.fitZoom(m == null ? 1f : m.size.f(), Ui.W() * Ui.zoom, Ui.H() * Ui.zoom, WIN_W, WIN_H);
     }
 
     /** GUI units per design unit with the menu's own size applied. */
@@ -368,6 +372,7 @@ public class ClickGui extends Screen {
             H = full() ? Ui.H() : WIN_H;
             float x = (Ui.W() - W) / 2, y = (Ui.H() - H) / 2 + 12 * (1 - t);
             float r = full() ? 0 : 14;
+            lastWindow[0] = x; lastWindow[1] = (Ui.H() - H) / 2; lastWindow[2] = W; lastWindow[3] = H; lastWindow[4] = Ui.W(); lastWindow[5] = Ui.H();
             Ui.rr(g, x, y, W, H, r, Ui.WIN, Ui.WIN_LINE);
             Ui.rr(g, x + 1, y + 1, SIDE - 1, H - 2, Math.max(0, r - 1), Ui.SIDE, 0);
             Ui.rect(g, x + SIDE - 14, y + 1, 14, H - 2, Ui.SIDE); // square off the sidebar's inner edge

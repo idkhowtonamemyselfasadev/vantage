@@ -275,6 +275,48 @@ public final class HudElements {
     }
 
     /**
+     * The pinned elements as {id: [anchor, dx, dy]}, for share codes and the configs made from them. Unlike the absolute form this does
+     * not depend on the sender's screen or Panel size: a piece pinned to a corner lands in the same corner on any screen.
+     */
+    public static JsonObject exportPins(Collection<HudElement> elements) {
+        JsonObject out = new JsonObject();
+        for (HudElement e : elements) {
+            if (e.pin() == null) continue;
+            JsonArray a = new JsonArray();
+            a.add(e.pin().anchor().key);
+            a.add(Math.round(e.pin().dx()));
+            a.add(Math.round(e.pin().dy()));
+            out.add(e.id(), a);
+        }
+        return out;
+    }
+
+    public static JsonObject exportPins() {
+        return exportPins(ALL.values());
+    }
+
+    /** One [anchor, dx, dy] entry, or null when it is not one. */
+    public static HudLayout.Pin readPin(JsonElement v) {
+        if (!(v instanceof JsonArray a) || a.size() != 3 || !(a.get(0) instanceof JsonPrimitive k) || !k.isString()) return null;
+        Anchor anchor = Anchor.byKey(k.getAsString());
+        Float dx = number(a.get(1)), dy = number(a.get(2));
+        return anchor == null || dx == null || dy == null ? null : new HudLayout.Pin(anchor, dx, dy);
+    }
+
+    /** Pins every element find knows to its [anchor, dx, dy] entry; unusable entries and unknown ids are left alone. */
+    public static void acceptPins(JsonObject pins, Function<String, HudElement> find) {
+        for (Map.Entry<String, JsonElement> en : pins.entrySet()) {
+            HudElement e = find.apply(en.getKey());
+            HudLayout.Pin p = readPin(en.getValue());
+            if (e != null && p != null) e.pinTo(p);
+        }
+    }
+
+    public static void acceptPins(JsonObject pins) {
+        acceptPins(pins, ALL::get);
+    }
+
+    /**
      * Takes the old {id: [x, y]} form: every id find knows is pinned at that absolute spot (the anchor follows at its first frame);
      * the entries of other ids come back, for the caller to deal with. Entries that are not two whole numbers are skipped.
      */

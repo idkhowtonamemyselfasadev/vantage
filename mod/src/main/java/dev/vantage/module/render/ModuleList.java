@@ -66,6 +66,9 @@ public class ModuleList extends Module {
         return m.category != Category.CLIENT && (m.owner == null || m.aloneByHand());
     }
 
+    /** Rig: where the last accent bar was drawn. */
+    public static float lastBarX;
+
     @Override
     public void onRender2D(GuiGraphics g, DeltaTracker delta) {
         List<Module> mods = new ArrayList<>();
@@ -91,7 +94,6 @@ public class ModuleList extends Module {
         Ui.begin(g);
         // the slot is the box around all lines; in a right corner lines hang off its right edge, otherwise off its left
         float sw = at[0] + widest + 3, y = at[1];
-        boolean pinned = dev.vantage.core.Config.PANELS.containsKey("modules");
         int line = 0;
         for (Module m : mods) {
             float a = anim.get(m);
@@ -105,7 +107,8 @@ public class ModuleList extends Module {
             if (h < 1) { y += h; continue; }
             // one glass strip per line, rounded on the side away from the screen edge
             if (background.on()) Ui.rr(g, x, y, w, h - 1, 3.5f, Ui.fade(Ui.GLASS, a), 0);
-            if (bar.on()) Ui.rr(g, right ? sw - 3 : (pinned ? at[0] - 3 : 0), y, 3, h - 1, 1.2f, Ui.fade(accent, a), 0);
+            lastBarX = right ? sw - 3 : Math.max(0, at[0] - 3); // beside the list wherever it sits; a left stack starts at the screen edge
+            if (bar.on()) Ui.rr(g, lastBarX, y, 3, h - 1, 1.2f, Ui.fade(accent, a), 0);
             Ui.text(g, name, x + 7, y + 2.5f, Ui.fade(accent, a), size, false);
             if (inf != null) Ui.text(g, inf, x + 7 + Ui.width(name + " ", size, false), y + 2.5f, Ui.fade(Ui.SUB, a), size, false);
             y += h;

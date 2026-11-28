@@ -40,14 +40,18 @@ public class CustomFov extends Module {
     @Override
     public String info() { return fov.i() + "°"; }
 
-    /** Every change keeps vanilla's own slider close (so turning this off lands near it) and says what the FOV is now. */
+    /**
+     * While on, every change keeps vanilla's own slider close (so turning this off lands near it) and says what the FOV is now.
+     * While off nothing is touched: loading a config must not change the player's own Options FOV.
+     */
     private void changed() {
+        if (!on()) return;
         Minecraft m = Minecraft.getInstance();
         if (m != null && m.options != null) {
             int v = Math.max(30, Math.min(110, fov.i()));
             if (m.options.fov().get() != v) m.options.fov().set(v);
         }
-        if (on()) Toasts.note("FOV", fov.i() + "° (Custom FOV)");
+        Toasts.note("FOV", fov.i() + "° (Custom FOV)");
     }
 
     @Override

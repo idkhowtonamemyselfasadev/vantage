@@ -242,6 +242,7 @@ public final class ConfigShare {
         o.add("panels", panels);
         o.add("settings", set);
         o.add("screen", screen(Ui.W(), Ui.H()));
+        o.add("anchors", dev.vantage.core.hud.HudElements.exportPins());
         return o;
     }
 
@@ -296,6 +297,8 @@ public final class ConfigShare {
                 }
             }
             small.add("s", hs);
+            JsonObject pins = validPins(h.get("anchors"));
+            if (pins.size() > 0) small.add("a", pins);
             root.add("h", small);
         }
         if (theme) {
@@ -323,6 +326,15 @@ public final class ConfigShare {
         if (!(e instanceof JsonArray a) || a.size() != 2 || !isInt(a.get(0)) || !isInt(a.get(1))) return null;
         int w = a.get(0).getAsInt(), h = a.get(1).getAsInt();
         return w < 200 || h < 200 || w > 20000 || h > 20000 ? null : new int[] {w, h};
+    }
+
+    /** The usable [anchor, dx, dy] entries of a HUD part (at most 200); empty when there are none. */
+    static JsonObject validPins(JsonElement e) {
+        JsonObject out = new JsonObject();
+        if (!(e instanceof JsonObject o)) return out;
+        for (var en : o.entrySet())
+            if (out.size() < 200 && PIECE.matcher(en.getKey()).matches() && dev.vantage.core.hud.HudElements.readPin(en.getValue()) != null) out.add(en.getKey(), en.getValue());
+        return out;
     }
 
     /**
@@ -562,6 +574,8 @@ public final class ConfigShare {
             hud.add("panels", panels);
             hud.add("settings", set);
             if (validScreen(h.get("z")) != null) hud.add("screen", h.get("z"));
+            JsonObject pins = validPins(h.get("a"));
+            if (pins.size() > 0) hud.add("anchors", pins);
         }
         if (root.get("t") instanceof JsonObject t) {
             theme = new JsonObject();
@@ -629,6 +643,8 @@ public final class ConfigShare {
                         Config.PANELS.put(e.getKey(), new int[] {a.get(0).getAsInt(), a.get(1).getAsInt()});
                     }
                 }
+                // codes that carry anchors: they win over the absolute spots above, which only older versions need
+                dev.vantage.core.hud.HudElements.acceptPins(validPins(h.get("anchors")));
                 if (h.get("settings") instanceof JsonObject hs) {
                     for (var e : hs.entrySet()) {
                         Module m = Modules.byName(e.getKey());
